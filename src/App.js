@@ -9,7 +9,7 @@ import './App.css';
 
 const particlesOptions = {
     "particles": {
-      "color": {"value": '#d5eaf0'},
+      "color": {"value": '#646c83'},
       "number": { "value": 100 },
       "size": { "value": 2 },
       "line_linked": {
@@ -21,7 +21,20 @@ const particlesOptions = {
       }
     }
 }
+
 class App extends Component {
+
+  constructor() {
+    super();
+    this.state = {
+      input: '',
+    }
+  }
+
+  onInputChange = (event) => {
+    console.log(event.target.value);
+
+  }
   render() {
     return (
       <div className="App">
@@ -31,10 +44,9 @@ class App extends Component {
           <Navigation/>
         </div>
         <Rank/>
-        <ImageLinkForm/>
+        <ImageLinkForm onInputChange={ this.onInputChange }/>
         { /*<FaceRecognition/>*/ }
       </div>
-
     );
   }
 }
