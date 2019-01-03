@@ -28,3 +28,7 @@ button {
     border-top-right-radius: 1rem;
     border-bottom-right-radius: 1rem;
 }
+
+p {
+    text-align: center;
+}
