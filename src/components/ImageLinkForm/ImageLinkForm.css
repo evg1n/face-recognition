@@ -1,0 +1,30 @@
+
+.texture {
+background-color: #646c83;
+background-image: linear-gradient(30deg, #afbabd 12%, transparent 12.5%, transparent 87%, #afbabd 87.5%, #afbabd),
+linear-gradient(150deg, #afbabd 12%, transparent 12.5%, transparent 87%, #afbabd 87.5%, #afbabd),
+linear-gradient(30deg, #afbabd 12%, transparent 12.5%, transparent 87%, #afbabd 87.5%, #afbabd),
+linear-gradient(150deg, #afbabd 12%, transparent 12.5%, transparent 87%, #afbabd 87.5%, #afbabd),
+linear-gradient(60deg, #d5eaf0 25%, transparent 25.5%, transparent 75%, #d5eaf0 75%, #d5eaf0),
+linear-gradient(60deg, #d5eaf0 25%, transparent 25.5%, transparent 75%, #d5eaf0 75%, #d5eaf0);
+background-size: 16px 28px;
+background-position: 0 0,
+0 0,
+8px 14px,
+8px 14px,
+0 0,
+8px 14px;
+}
+
+input {
+    background-color: #d5eaf0;
+    border-top-left-radius: 1rem;
+    border-bottom-left-radius: 1rem;
+}
+
+button {
+    background-color: #646c83;
+    color: #fff;
+    border-top-right-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+}

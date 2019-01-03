@@ -1,0 +1,7 @@
+@import url('https://fonts.googleapis.com/css?family=Share+Tech+Mono');
+
+body {
+  background-image: url('./img/background.jpeg');
+  font-family: 'Share Tech Mono',
+  monospace;
+}
