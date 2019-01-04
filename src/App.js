@@ -5,7 +5,6 @@ import Logo from './components/Logo/Logo.js';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm.js';
 import Rank from './components/Rank/Rank.js';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition.js';
-import shortid from 'shortid';
 
 import './App.css';
 
@@ -51,7 +50,8 @@ class App extends Component {
         let clarifaiFace = data.outputs[0].data.regions[i].region_info.bounding_box;
 
     let boxArray = [];
-     const boxGroup =  {
+
+     let boxGroup =  {
         leftCol: clarifaiFace.left_col * width,
         topRow: clarifaiFace.top_row * height,
         rightCol: width - (clarifaiFace.right_col * width),
@@ -61,25 +61,44 @@ class App extends Component {
     for (i; i < data.outputs[0].data.regions.length;i++) {
 
         clarifaiFace = data.outputs[0].data.regions[i].region_info.bounding_box;
-
-        boxArray.push(boxGroup)
-       
+       // console.log('clarifai face', clarifaiFace);
+        boxArray.push(clarifaiFace);
+      // console.log('loop kutu', boxArray);
     }
+    console.log('kutu', boxArray);
      return {boxArray}
-    }
+  }
 
+  
   
 
   displayFaceBox = (box) => {
 
+    let divBox = document.getElementById('inputImage').parentNode;
+    let canvas = document.getElementById('inputImage');
 
-    console.log('displayFacebox', box);
-    for (let i=0; i < box.length;i++) {
-    console.log(box[i]);
-    this.setState({box: box[i]});
-    console.log('logging box', this.state.box);
+    console.log('box', box.boxArray);
+
+    for (let i=0; i < box.boxArray.length;i++) {
+
+      let node = document.createElement('div');
+      let lastChild = document.getElementById('imageContainer').lastChild;
+      this.setState({box: box.boxArray[i]});
+      console.log('current style', box.boxArray[i]);
+
+      let top = (canvas.height - (box.boxArray[i].top_row * canvas.height)) / canvas.height;
+      let left = canvas.width /(canvas.width - (box.boxArray[i].left_col * canvas.width));
+      let bottom = canvas.height / (box.boxArray[i].bottom_row * canvas.height);
+      let right = canvas.width / (box.boxArray[i].right_col * canvas.width);
+
+      let style = `top: ${top}%; right: ${right}%; bottom: ${bottom}%; left: ${left}%`;
+
+      divBox.appendChild(node).setAttribute('style', style)
+      lastChild.setAttribute('class', 'bounding-box');
+      console.log('style', style);
     }
-    console.log('display face box end');
+     document.getElementById('imageContainer').lastChild.setAttribute('class', 'bounding-box');
+    return console.log('display face box end');
   }
   
   onInputChange = (event) => {
@@ -90,24 +109,10 @@ class App extends Component {
    app.models
    .predict(Clarifai.FACE_DETECT_MODEL, this.state.input)
    .then(response => {
-     this.drawFaceBoxes(
+     this.displayFaceBox(
        this.calculateFaceLocation(response));
   })
    .catch(err => console.log(err));
-  }
-
-  drawFaceBoxes = (boxes) => {
-    console.log('face count', boxes);
-    var divBox = document.getElementById('imageContainer'), htmlString = 'asd';
-    console.log(divBox, htmlString);
-    for (let j=0; j < boxes.length; j++) {
-      console.log('box number', boxes[j]);
-      //htmlString += '<div className = "bounding-box"style={' + boxes[i] +
-      //  '}></div>'
-    //divBox.insertAdjacentHTML('beforeend', htmlString);
-    console.log('boxes', boxes[j]);
-    }
-    return null;
   }
   
    render() {
