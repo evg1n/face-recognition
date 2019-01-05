@@ -61,6 +61,14 @@ class App extends Component {
      return {boxArray}
   }
 
+  reset = () => {
+    var container = document.getElementById('imageContainer');
+    while (container.firstChild) {
+      container.removeChild(container.firstChild);
+      console.log('clearing childnodes', this.state.imgUrl);
+    }
+    console.log('cleared children nodes');
+  }
   displayFaceBox = (box) => {
 
     let divBox = document.getElementById('imageContainer');
@@ -70,8 +78,8 @@ class App extends Component {
     document.getElementById('inputImage').setAttribute('src', imageSrc);
 
     let canvas = document.getElementById('inputImage');
-    
-    canvas.onload = console.log('image loaded', this.state.imgUrl);
+
+    canvas.onload = console.log('image loaded');
 
       for (let i = 0; i < box.boxArray.length; i++) {
       this.setState({
@@ -86,7 +94,7 @@ class App extends Component {
         let right = canvas.width - (box.boxArray[i].right_col * canvas.width);
         let style = `top: ${top}px; right: ${right}px; bottom: ${bottom}px; left: ${left}px`;
 
-        if(canvas.complete){divBox.appendChild(node).setAttribute('style', style);}
+        divBox.appendChild(node).setAttribute('style', style);
 
         if (lastChild !== canvas) {
           // we don't want the image to have border
@@ -102,16 +110,15 @@ class App extends Component {
   
   }
   onButtonSubmit = () => {
+
+    if(this.state.imgUrl !== ''){
+      console.log('resetting');
+      this.reset();
+    }
+
      this.setState({
        imgUrl: this.state.input
      });
-    
-    var container = document.getElementById('imageContainer');
-    while (container.firstChild) {
-       container.removeChild(container.firstChild);
-       console.log('clearing childnodes', this.state.imgUrl);
-     }
-     console.log('cleared children nodes');
 
     app.models
     .predict(Clarifai.FACE_DETECT_MODEL, this.state.input)
