@@ -84,20 +84,20 @@ class App extends Component {
       let node = document.createElement('div');
       let lastChild = document.getElementById('imageContainer').lastChild;
       this.setState({box: box.boxArray[i]});
-      console.log('current style', box.boxArray[i]);
 
-      let top = (canvas.height - (box.boxArray[i].top_row * canvas.height)) / canvas.height;
-      let left = canvas.width /(canvas.width - (box.boxArray[i].left_col * canvas.width));
-      let bottom = canvas.height / (box.boxArray[i].bottom_row * canvas.height);
-      let right = canvas.width / (box.boxArray[i].right_col * canvas.width);
-
-      let style = `top: ${top}%; right: ${right}%; bottom: ${bottom}%; left: ${left}%`;
+      let top = box.boxArray[i].top_row * canvas.height;
+      let left = box.boxArray[i].left_col * canvas.width;
+      let bottom = canvas.height - (box.boxArray[i].bottom_row * canvas.height);
+      let right = canvas.width - (box.boxArray[i].right_col * canvas.width);
+      let style = `top: ${top}px; right: ${right}px; bottom: ${bottom}px; left: ${left}px`;
 
       divBox.appendChild(node).setAttribute('style', style)
+      if (lastChild !== canvas){
       lastChild.setAttribute('class', 'bounding-box');
+      }
       console.log('style', style);
     }
-     document.getElementById('imageContainer').lastChild.setAttribute('class', 'bounding-box');
+     document.getElementById('imageContainer').lastChild.setAttribute('class', 'bounding-box absolutely');
     return console.log('display face box end');
   }
   
