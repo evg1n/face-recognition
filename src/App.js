@@ -46,18 +46,15 @@ class App extends Component {
   }
 
   calculateFaceLocation = (data) => {
-
+  
     let i = 0;
-    
     let clarifaiFace = data.outputs[0].data.regions[i].region_info.bounding_box;
-
     let boxArray = [];
 
     for (i; i < data.outputs[0].data.regions.length;i++) {
         clarifaiFace = data.outputs[0].data.regions[i].region_info.bounding_box;
         boxArray.push(clarifaiFace);
     }
-
      return {boxArray}
   }
 
@@ -67,42 +64,34 @@ class App extends Component {
       container.removeChild(container.firstChild);
       console.log('clearing childnodes', this.state.imgUrl);
     }
-    console.log('cleared children nodes');
   }
   displayFaceBox = (box) => {
-
+    let image = document.getElementById('inputImage');
     let divBox = document.getElementById('imageContainer');
-    let image = document.createElement('img');
-    let imageSrc = `${this.state.imgUrl}`;
-    divBox.appendChild(image).setAttribute('id', 'inputImage');
-    document.getElementById('inputImage').setAttribute('src', imageSrc);
-
-    let canvas = document.getElementById('inputImage');
-
-    canvas.onload = console.log('image loaded');
 
       for (let i = 0; i < box.boxArray.length; i++) {
-      this.setState({
+        
+        this.setState({
           box: box.boxArray[i]
         });
-
+        
         let node = document.createElement('div');
         let lastChild = document.getElementById('imageContainer').lastChild;
-        let top = box.boxArray[i].top_row * canvas.height;
-        let left = box.boxArray[i].left_col * canvas.width;
-        let bottom = canvas.height - (box.boxArray[i].bottom_row * canvas.height);
-        let right = canvas.width - (box.boxArray[i].right_col * canvas.width);
+        let top = box.boxArray[i].top_row * image.height;
+        let left = box.boxArray[i].left_col * image.width;
+        let bottom = image.height - (box.boxArray[i].bottom_row * image.height);
+        let right = image.width - (box.boxArray[i].right_col * image.width);
         let style = `top: ${top}px; right: ${right}px; bottom: ${bottom}px; left: ${left}px`;
-
+       
         divBox.appendChild(node).setAttribute('style', style);
 
-        if (lastChild !== canvas) {
-          // we don't want the image to have border
+        if (lastChild !== image) {
+  
           lastChild.setAttribute('class', 'bounding-box');
         }
+      document.getElementById('imageContainer').lastChild.setAttribute('class', 'bounding-box absolutely');
       }
-
-     document.getElementById('imageContainer').lastChild.setAttribute('class', 'bounding-box absolutely');
+    
   }
   
   onInputChange = (event) => {
@@ -112,15 +101,25 @@ class App extends Component {
   onButtonSubmit = () => {
 
     if(this.state.imgUrl !== ''){
-      console.log('resetting');
       this.reset();
     }
 
      this.setState({
        imgUrl: this.state.input
      });
+    
+    let divBox = document.getElementById('imageContainer');
+    let canvas = document.createElement('img');
+    let imageSrc = `${this.state.input}`; //this was it!
 
-    app.models
+
+    divBox.appendChild(canvas).setAttribute('id', 'inputImage');
+
+    document.getElementById('inputImage').setAttribute('src', imageSrc);
+    let image0 = document.getElementById('inputImage');
+
+
+    image0.onload = app.models
     .predict(Clarifai.FACE_DETECT_MODEL, this.state.input)
     .then(response => {
       this.displayFaceBox(
@@ -133,7 +132,7 @@ class App extends Component {
     });
   }
   
-   render() {
+  render() {
     return (
       <div className="App">
         <div className="pa3 stretch">
