@@ -41,6 +41,7 @@ class App extends Component {
       input: '',
       imgUrl:'',
       box:{},
+      imgLoad: false,
     }
   }
 
@@ -70,7 +71,9 @@ class App extends Component {
 
     let canvas = document.getElementById('inputImage');
     
-      for (let i = 0; i < box.boxArray.length; i++) {  
+    canvas.onload = console.log('image loaded', this.state.imgUrl);
+
+      for (let i = 0; i < box.boxArray.length; i++) {
       this.setState({
           box: box.boxArray[i]
         });
@@ -84,26 +87,32 @@ class App extends Component {
         let style = `top: ${top}px; right: ${right}px; bottom: ${bottom}px; left: ${left}px`;
 
         if(canvas.complete){divBox.appendChild(node).setAttribute('style', style);}
-  
+
         if (lastChild !== canvas) {
           // we don't want the image to have border
           lastChild.setAttribute('class', 'bounding-box');
         }
       }
-  
 
      document.getElementById('imageContainer').lastChild.setAttribute('class', 'bounding-box absolutely');
   }
   
   onInputChange = (event) => {
    this.setState({input: event.target.value});
-   var container = document.getElementById('imageContainer');
-   while (container.firstChild){
-     container.removeChild(container.firstChild);
-   }
+  
   }
   onButtonSubmit = () => {
-    this.setState({imgUrl: this.state.input});
+     this.setState({
+       imgUrl: this.state.input
+     });
+    
+    var container = document.getElementById('imageContainer');
+    while (container.firstChild) {
+       container.removeChild(container.firstChild);
+       console.log('clearing childnodes', this.state.imgUrl);
+     }
+     console.log('cleared children nodes');
+
     app.models
     .predict(Clarifai.FACE_DETECT_MODEL, this.state.input)
     .then(response => {
@@ -137,9 +146,6 @@ class App extends Component {
 }
 
 console.log( 
-  /*final front-end project for udemy ZTM: Complete Web Developer in 2019
-    guidelines by: https://github.com/aneagoie
-    additional features (theming, multiple detection) by evgin
-    github: https://github.com/evg1n}*/
+    `final front-end project for udemy ZTM: Complete Web Developer in 2019 \nguidelines by: https://github.com/aneagoie \nadditional features (theming, multiple detection, error logging) by: https://github.com/evg1n`
     );
 export default App;
