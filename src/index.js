@@ -1,3 +1,8 @@
+//final front-end project for udemy ZTM: Complete Web Developer in 2019
+//guidelines by: https://github.com/aneagoie
+//additional features (theming, multiple detection) by evgin
+//github: https://github.com/evg1n
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
