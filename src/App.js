@@ -9,6 +9,8 @@ import Navigation from './components/Navigation/Navigation.js';
 import Logo from './components/Logo/Logo.js';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm.js';
 import Rank from './components/Rank/Rank.js';
+import SignIn from './components/SignIn/SignIn.js';
+import Register from './components/Register/Register.js';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition.js';
 import './App.css';
 
@@ -41,7 +43,8 @@ class App extends Component {
       input: '',
       imgUrl:'',
       box:{},
-      imgLoad: false,
+      route:'signin',
+      isSignedIn: false
     }
   }
 
@@ -94,6 +97,16 @@ class App extends Component {
     
   }
   
+onRouteChange = (route) => {
+  if (route === 'signout'){
+    this.setState({isSignedIn: false});
+  } else if (route === 'home') {
+    this.setState({isSignedIn: true});
+  }
+  this.setState({route: route});
+  console.log(this.state);
+}
+
   onInputChange = (event) => {
    this.setState({input: event.target.value});
   
@@ -138,14 +151,20 @@ class App extends Component {
         <div className="pa3 stretch">
           <Particles className="particle-bg" params={ particlesOptions }/>
           <Logo/>
-          <Navigation/>
+          <Navigation isSignedIn={this.state.isSignedIn} onRouteChange={this.onRouteChange}/>
         </div>
-        <Rank/>
-        <ImageLinkForm 
-        onInputChange={ this.onInputChange }
-        onButtonSubmit={this.onButtonSubmit}
-        />
-        <FaceRecognition box={this.state.box} imgUrl={this.state.imgUrl}/>
+        { this.state.route === 'home' ? 
+        <div>
+            <Rank/>
+            <ImageLinkForm 
+            onInputChange={this.onInputChange}
+            onButtonSubmit={this.onButtonSubmit}
+            />
+            <FaceRecognition box={this.state.box} imgUrl={this.state.imgUrl}/>
+          </div>
+        : ( this.state.route === 'signin'
+        ? <SignIn onRouteChange={this.onRouteChange}/>
+        : <Register onRouteChange={this.onRouteChange}/>) }
       </div>
     );
   }

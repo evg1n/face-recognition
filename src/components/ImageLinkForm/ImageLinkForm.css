@@ -16,13 +16,13 @@ background-position: 0 0,
 8px 14px;
 }
 
-input {
+.inputText {
     background-color: #d5eaf0;
     border-top-left-radius: 1rem;
     border-bottom-left-radius: 1rem;
 }
 
-button {
+.btn {
     background-color: #646c83;
     color: #fff;
     border-top-right-radius: 1rem;
